@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>صندوق الرسائل 💌</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:20px;background:linear-gradient(150deg,#ffe5ef,#fff8fb 60%,#f6e7f0);font-family:system-ui,sans-serif;color:#392633}.wrap{width:min(100%,760px);margin:4vh auto}.card{background:#ffffffed;border:1px solid #f3c8db;border-radius:24px;padding:clamp(20px,4vw,32px);box-shadow:0 18px 55px #8f3e6818}h1{color:#8f3e68}p{line-height:1.8;color:#77566a}button{border:0;border-radius:14px;padding:13px 18px;background:#e879a9;color:white;font:inherit;font-weight:700;cursor:pointer}.message{border:1px solid #f0c9db;background:#fffafd;border-radius:16px;padding:16px;margin:14px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8}.date{font-size:12px;color:#9a778b;margin-bottom:8px}.status{margin:12px 0}
+</style></head><body><main class="wrap"><section class="card"><h1>صندوق الرسائل 💌</h1><p>الرسائل المعروضة هنا متاحة لأي شخص لديه رابط هذه الصفحة.</p><button id="refresh">تحديث الرسائل</button><div id="status" class="status"></div><section id="messages"></section></section></main>
+<script src="config.js"></script><script>
+const list=document.getElementById('messages'),s=document.getElementById('status'),btn=document.getElementById('refresh');
+async function load(){btn.disabled=true;s.textContent='بنحمّل الرسائل...';list.replaceChildren();try{const r=await fetch(`${APP_CONFIG.SUPABASE_URL}/functions/v1/super-worker`,{method:'POST',headers:{'Content-Type':'application/json','apikey':APP_CONFIG.SUPABASE_ANON_KEY},body:JSON.stringify({action:'read'})});const d=await r.json();if(!r.ok||!Array.isArray(d.messages))throw 0;if(!d.messages.length)s.textContent='لسه مفيش رسائل.';else{s.textContent=`عدد الرسائل: ${d.messages.length}`;for(const m of d.messages){const a=document.createElement('article');a.className='message';const dt=document.createElement('div');dt.className='date';dt.textContent=new Date(m.created_at).toLocaleString('ar-EG');const body=document.createElement('div');body.textContent=m.body;a.append(dt,body);list.append(a)}}}catch{s.textContent='تعذر تحميل الرسائل. راجع إعدادات Supabase.'}finally{btn.disabled=false}}
+btn.addEventListener('click',load);load();
+</script></body></html>

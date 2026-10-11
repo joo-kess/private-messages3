@@ -1,0 +1,5 @@
+/* Public configuration only. Never put service_role or secret keys here. */
+window.APP_CONFIG = {
+  SUPABASE_URL: "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE",
+  SUPABASE_ANON_KEY: "PASTE_YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY_HERE"
+};

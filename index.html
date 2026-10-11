@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>رسالة ليك 💌</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top,#ffe1ed,#fff8fb 55%,#fceef5);font-family:system-ui,sans-serif;color:#392633}.card{width:min(100%,560px);background:#ffffffdf;border:1px solid #f3c8db;border-radius:28px;padding:clamp(22px,5vw,38px);box-shadow:0 18px 55px #8f3e6818}.heart{text-align:center;font-size:40px}h1{text-align:center;color:#8f3e68}p{text-align:center;line-height:1.8;color:#77566a}textarea{width:100%;min-height:210px;resize:vertical;border:1px solid #e9bfd2;border-radius:18px;padding:16px;font:inherit;line-height:1.8;background:#fffdfd}button{width:100%;border:0;border-radius:16px;padding:15px;margin-top:14px;background:#e879a9;color:white;font:inherit;font-weight:700;cursor:pointer}.status{text-align:center;margin-top:12px;min-height:28px}.foot{text-align:center;font-size:12px;color:#a17e91;margin-top:20px}
+</style>
+</head>
+<body><main class="card"><div class="heart">💌</div><h1>فيه كلام نفسك تقوليه؟</h1><p>اكتبي براحتك كل اللي جواكي، وبعدها ابعتي رسالتك.</p>
+<form id="form"><textarea id="message" maxlength="10000" required placeholder="اكتبي رسالتك هنا..."></textarea><button id="send">ابعتي رسالتك ❤️</button></form><div id="status" class="status" aria-live="polite"></div><div class="foot">مساحة للرسائل</div></main>
+<script src="config.js"></script><script>
+const s=document.getElementById('status'),b=document.getElementById('send');
+document.getElementById('form').addEventListener('submit',async e=>{e.preventDefault();const body=document.getElementById('message').value.trim();if(!body){s.textContent='اكتبي الرسالة الأول';return}b.disabled=true;s.textContent='بنرسل رسالتك...';try{const r=await fetch(`${APP_CONFIG.SUPABASE_URL}/functions/v1/super-worker`,{method:'POST',headers:{'Content-Type':'application/json','apikey':APP_CONFIG.SUPABASE_ANON_KEY},body:JSON.stringify({action:'send',body})});const d=await r.json();if(!r.ok||!d.success)throw 0;document.getElementById('form').reset();s.textContent='وصلت رسالتك ❤️'}catch{s.textContent='الإرسال مش شغال لسه. راجع إعدادات Supabase.'}finally{b.disabled=false}});
+</script></body></html>
